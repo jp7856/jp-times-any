@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-paper: #faf8f5;
+  --color-ink: #1a1a1a;
+  --color-accent: #c41e3a;
+  --color-border: #e5e0d8;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-headline {
+  font-family: var(--font-headline), Georgia, serif;
+}
+
+/* 신문지 느낌 */
+.newspaper-border {
+  border: 2px solid var(--color-ink);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+
+/* 모바일 터치 영역 */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* 노치·세이프 영역 대응 */
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top, 0);
+}

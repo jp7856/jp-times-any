@@ -1,0 +1,12 @@
+{
+  "name": "JP Times",
+  "short_name": "JP Times",
+  "description": "매주 월요일, 초등·중등·고등을 위한 주간 한글 신문",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "lang": "ko",
+  "icons": []
+}
