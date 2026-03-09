@@ -24,8 +24,28 @@ npm run dev
 
 ```bash
 npm run build
-npm start
 ```
+
+정적 파일이 `out` 폴더에 생성됩니다. 로컬 미리보기: `npx serve out`
+
+## Cloudflare Pages 배포
+
+1. 저장소를 Cloudflare Pages에 연결합니다.
+2. **Settings → Builds & deployments → Build configuration**에서 **반드시** 다음을 설정합니다.
+
+   | 설정 항목 | 값 |
+   |----------|-----|
+   | **Build command** | `npm run build` |
+   | **Build output directory** | `out` |
+
+3. **Build output directory**를 비우거나 잘못 적으면** 루트에 `index.html`이 없어서 **사이트 접속 시 404**가 납니다. 항상 `out`으로 지정하세요.
+4. 저장 후 **재배포**(Retry deployment 또는 새 커밋 푸시)를 한 번 실행하세요.
+
+### 404가 날 때 확인할 것
+
+- **Build command**가 비어 있지 않은지 (비어 있으면 빌드가 스킵되어 `out`이 생성되지 않음)
+- **Build output directory**가 정확히 `out`인지 (대소문자 포함)
+- 배포 로그에서 "Success: Finished cloning" 다음에 빌드 단계가 실행되고, 마지막에 `out` 폴더를 사용했다는 메시지가 있는지
 
 ## 프로젝트 구조
 
