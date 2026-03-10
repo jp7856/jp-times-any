@@ -24,3 +24,10 @@ export const LEVEL_DESCRIPTIONS: Record<Level, string> = {
 
 /** 호수 표기: 1호 = 2026.02.02(월), N호 = N주차 */
 export const ISSUE_NUMBER_BASE = 0;
+
+/** 레벨별 기사 개수 */
+export const ARTICLE_COUNTS: Record<Level, number> = {
+  elementary: 5,
+  middle: 8,
+  high: 12,
+};

@@ -80,8 +80,8 @@ export function PaperContent({ level }: { level: Level }) {
           </div>
         </div>
 
-        {/* 섹션 제목: 초등 기사 / 중등 기사 / 고등 기사 */}
-        <h2 className="text-xl sm:text-2xl font-bold text-emerald-700 mb-5">
+        {/* 섹션 제목: 초등 기사 / 중등 기사 / 고등 기사 (녹색 + 밑줄) */}
+        <h2 className="text-xl sm:text-2xl font-bold text-emerald-700 border-b-2 border-emerald-700 pb-2 mb-5">
           {LEVEL_SECTION_HEADING[level]}
         </h2>
 
@@ -101,10 +101,14 @@ export function PaperContent({ level }: { level: Level }) {
             {issue?.theme && (
               <p className="text-sm text-gray-600 mb-4">{issue.theme}</p>
             )}
-            <ul className="space-y-5 sm:space-y-6">
+            <ul className="grid grid-cols-2 gap-4 sm:gap-5">
               {articles.map((article) => (
                 <li key={article.id}>
-                  <ArticleCard article={article} />
+                  <ArticleCard
+                    article={article}
+                    issueLabel={`제${issueNumber}호_${formatIssueDateShort(issueDate)}`}
+                    level={level}
+                  />
                 </li>
               ))}
             </ul>

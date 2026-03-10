@@ -5,13 +5,21 @@ import { getIssueDateByWeekNumber } from '@/lib/weekUtils';
 /** 1~6주차 테마. 7주차 이후는 이 테마를 순환해 사용합니다. */
 const ISSUE_WEEK_COUNT = 6;
 
-/** 주차별 이슈 테마와 기사 (레벨별). 실제 서비스에서는 API로 주간 이슈를 가져올 수 있습니다. */
+/** 레벨별 추가 제목 (기본 1개 + 여기 개수 = 5, 8, 12) */
+type LevelTitles = Record<Level, string[]>;
+
+/** 주차별 테마 + 기본 기사 3개 + 레벨별 추가 제목으로 5/8/12개 생성 */
 const ISSUES_BY_WEEK: Record<
   number,
-  { theme: string; articles: Omit<Article, 'level'>[] }
+  { theme: string; articles: Omit<Article, 'level'>[]; moreTitles: LevelTitles }
 > = {
   1: {
     theme: '인공지능과 우리 생활',
+    moreTitles: {
+      elementary: ['챗GPT로 무엇을 할 수 있을까', '로봇이 말을 알아듣는 법', '인공지능과 나의 하루', 'AI와 함께하는 공부'],
+      middle: ['대화형 AI 활용 사례', 'AI와 학습', '챗봇과 일상', 'AI 윤리 이야기', '학교에서 만나는 AI', 'AI가 쓴 글 구별하기', '미래 직업과 AI'],
+      high: ['생성형 AI와 저작권', 'AI 규제 국제 비교', '딥페이크와 정보 환경', 'AI와 노동 시장', 'AI 거버넌스', '오픈소스 AI', 'AI 안전성 논의', '한국 AI 정책', 'EU AI법 상세', 'AI와 교육', 'AI 비서 서비스'],
+    },
     articles: [
       {
         id: '1-e',
@@ -38,6 +46,11 @@ const ISSUES_BY_WEEK: Record<
   },
   2: {
     theme: '기후 위기와 탄소 줄이기',
+    moreTitles: {
+      elementary: ['쓰레기 줄이고 재활용하기', '지구를 지키는 작은 습관', '에너지 절약 실천', '동물들이 사는 숲'],
+      middle: ['탄소 발자국이란', '재활용과 분리수거', '에너지 전환', '기후 행동 챌린지', '학교 탄소중립', '환경 동아리', '친환경 소비'],
+      high: ['CBAM과 수출', '배출권 거래제', '재생에너지 확대', '기후 정책 비교', '넷제로 경로', '기후 리스크', '녹색 금융', '탄소세 논의', '산업 전환', '기후 정의', '청년 기후 활동', '국제 기후 협상'],
+    },
     articles: [
       {
         id: '2-e',
@@ -64,6 +77,11 @@ const ISSUES_BY_WEEK: Record<
   },
   3: {
     theme: '청소년 스마트폰과 디지털 리터러시',
+    moreTitles: {
+      elementary: ['스마트폰과 눈 건강', '게임할 때 지키기', '인터넷에서 예의', '좋은 정보 고르기'],
+      middle: ['디지털 리터러시란', '스마트폰 사용 규칙', '가짜 뉴스 구별', 'SNS와 정서', '사이버 안전', '미디어 시간', '온라인 친구'],
+      high: ['알고리즘과 정보 환경', '플랫폼 규제', '디지털 권리', '데이터 프라이버시', '넷플릭스와 미디어', '소셜미디어와 선거', '인플루언서', '미디어 리터러시 교육', '가짜 뉴스 법적 대응', '디지털 격차', '청소년 SNS', '스크린 타임 연구'],
+    },
     articles: [
       {
         id: '3-e',
@@ -90,6 +108,11 @@ const ISSUES_BY_WEEK: Record<
   },
   4: {
     theme: '우주 탐사와 한국의 역할',
+    moreTitles: {
+      elementary: ['태양계 여덟 행성 알기', '달은 왜 모양이 바뀌나요', '별자리 찾기', '우주인이 되는 법'],
+      middle: ['누리호 쏘아 올리기', '인공위성의 쓰임', '달 탐사 프로젝트', '우주 산업', '화성 탐사', '우주 쓰레기', '천문 관측'],
+      high: ['아르테미스 프로그램', '우주 자원 개발', '한국 우주 산업', 'ESA와 협력', '상업 우주 비행', '우주 법', '위성 통신', '우주 쓰레기 대응', '달 기지 구상', '화성 유인 탐사', '우주 관광', '우주 방어'],
+    },
     articles: [
       {
         id: '4-e',
@@ -116,6 +139,11 @@ const ISSUES_BY_WEEK: Record<
   },
   5: {
     theme: '청년 일자리와 노동 시장',
+    moreTitles: {
+      elementary: ['여러 가지 직업', '내가 좋아하는 일', '직업 체험', '일하는 사람들'],
+      middle: ['진로 탐색', '알바와 권리', '최저임금', '일과 공부', '청년 일자리 정책', '비정규직이란', '노동 조합'],
+      high: ['청년 실업 지표', '노동시장 이중구조', '정규직 전환', '청년 수당', '직업 훈련', '비정규직 논의', '최저임금 효과', '청년 창업', '원격 근무', '노동 권리', '고용 보험', '일과 삶 균형'],
+    },
     articles: [
       {
         id: '5-e',
@@ -142,6 +170,11 @@ const ISSUES_BY_WEEK: Record<
   },
   6: {
     theme: '전쟁과 평화, 국제 관계',
+    moreTitles: {
+      elementary: ['세계 여러 나라', '평화란 무엇일까', '우리나라와 친구 나라', '다른 말 배우기'],
+      middle: ['UN이 하는 일', '국제 분쟁과 평화', '지역별 뉴스', '외교관이란', '국제기구', '평화 교육', '글로벌 이슈'],
+      high: ['미중 경쟁', '공급망 재편', '반도체 협력', '한미동맹', 'EU와 관계', '국제법', '경제 안보', '자원 외교', '국제 무역', '다자주의', '지역 통합', '글로벌 거버넌스'],
+    },
     articles: [
       {
         id: '6-e',
@@ -168,17 +201,29 @@ const ISSUES_BY_WEEK: Record<
   },
 };
 
-function attachLevel(
-  articles: Omit<Article, 'level'>[],
-  levels: Level[]
-): Article[] {
-  return articles.map((a, i) => ({
-    ...a,
-    level: levels[i % levels.length],
-  }));
+const LEVEL_KEYS = { elementary: 'e', middle: 'm', high: 'h' } as const;
+
+function expandLevelArticles(
+  weekIndex: number,
+  level: Level,
+  base: Omit<Article, 'level'>,
+  moreTitles: string[]
+): Omit<Article, 'level'>[] {
+  const k = LEVEL_KEYS[level];
+  const result: Omit<Article, 'level'>[] = [
+    { ...base, id: `${weekIndex}-${k}-1`, title: base.title },
+  ];
+  moreTitles.forEach((title, i) => {
+    result.push({
+      ...base,
+      id: `${weekIndex}-${k}-${i + 2}`,
+      title,
+    });
+  });
+  return result;
 }
 
-/** 주차 번호로 해당 주의 이슈(레벨별 기사 포함) 반환. 7주차 이후는 1~6주차 테마를 순환해 항상 기사가 보이게 합니다. */
+/** 주차 번호로 해당 주의 이슈(레벨별 5/8/12개 기사) 반환. 7주차 이후는 1~6주차 테마를 순환합니다. */
 export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
   const issueDate = getIssueDateByWeekNumber(weekNumber);
   const dataIndex = ((weekNumber - 1) % ISSUE_WEEK_COUNT) + 1;
@@ -191,8 +236,22 @@ export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
       articles: [],
     };
   }
-  const levels: Level[] = ['elementary', 'middle', 'high'];
-  const articles = attachLevel(data.articles, levels).map((a) => ({
+  const [baseE, baseM, baseH] = data.articles;
+  const articles: Article[] = [];
+  expandLevelArticles(
+    dataIndex,
+    'elementary',
+    baseE,
+    data.moreTitles.elementary
+  ).forEach((a) => articles.push({ ...a, level: 'elementary' }));
+  expandLevelArticles(dataIndex, 'middle', baseM, data.moreTitles.middle).forEach(
+    (a) => articles.push({ ...a, level: 'middle' })
+  );
+  expandLevelArticles(dataIndex, 'high', baseH, data.moreTitles.high).forEach(
+    (a) => articles.push({ ...a, level: 'high' })
+  );
+
+  const withWeekId = articles.map((a) => ({
     ...a,
     id: `${weekNumber}-${a.id}`,
   }));
@@ -200,7 +259,7 @@ export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
     weekNumber,
     issueDate,
     theme: data.theme,
-    articles,
+    articles: withWeekId,
   };
 }
 
