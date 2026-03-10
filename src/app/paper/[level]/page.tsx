@@ -23,7 +23,7 @@ export default async function PaperPage({
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b-2 border-[var(--color-ink)] bg-white/90 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <Link
             href="/"
             className="text-sm font-medium text-gray-600 hover:text-[var(--color-ink)] touch-target flex items-center gap-1"

@@ -59,7 +59,7 @@ export function PaperContent({ level }: { level: Level }) {
 
   return (
     <>
-      <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 sm:py-6">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-5 sm:py-6">
         {/* NE Times 스타일: 기사 읽기 안내 */}
         <p className="text-sm text-gray-600 mb-4">
           이번 주 JP 타임즈에는 어떤 뉴스들이 담겨 있는지 확인해 보세요.
@@ -116,19 +116,10 @@ export function PaperContent({ level }: { level: Level }) {
             <p>이 주의 기사가 아직 없습니다.</p>
           </div>
         ) : (
-          <>
-            {/* 섹션별 기사 - 한 화면에 모두 표시 (중등·고등은 컴팩트) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {/* 섹션별 기사 - 2열 신문형 레이아웃 (중등·고등은 컴팩트) */}
             {sortedCategories.map((category) => (
-              <section
-                key={category}
-                className={
-                  level === 'elementary'
-                    ? 'mb-6'
-                    : level === 'middle'
-                      ? 'mb-4'
-                      : 'mb-3'
-                }
-              >
+              <section key={category}>
                 <h3
                   className={
                     level === 'elementary'
@@ -138,15 +129,7 @@ export function PaperContent({ level }: { level: Level }) {
                 >
                   {category}
                 </h3>
-                <ul
-                  className={`grid gap-2 sm:gap-3 ${
-                    level === 'elementary'
-                      ? 'grid-cols-2'
-                      : level === 'middle'
-                        ? 'grid-cols-2 sm:grid-cols-4'
-                        : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
-                  }`}
-                >
+                <ul className="grid grid-cols-2 gap-2 sm:gap-3">
                   {groupedByCategory[category].map((article) => (
                     <li key={article.id}>
                       <ArticleCard
@@ -160,7 +143,7 @@ export function PaperContent({ level }: { level: Level }) {
                 </ul>
               </section>
             ))}
-          </>
+          </div>
         )}
 
         <footer className="mt-10 pt-4 text-center text-sm text-gray-500">
