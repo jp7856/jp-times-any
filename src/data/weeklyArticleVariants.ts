@@ -12,70 +12,68 @@ import {
 } from '@/data/sectionArticles';
 import type { Level } from '@/lib/constants';
 
-const SOURCE = (query: string, sig: number) =>
-  `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${sig}`;
+/** 직접 Unsplash CDN URL - 핵심 키워드와 정확히 일치하는 이미지만 사용 */
+const U = (id: string) => `https://images.unsplash.com/photo-${id}?w=800&q=80`;
 
-const SECTION_QUERIES: Record<string, string> = {
-  정치: 'politics voting ballot',
-  경제: 'economy money finance',
-  사회: 'community people teamwork',
-  문화: 'korean culture tradition hanbok',
-  과학: 'science technology research',
-  교육: 'education classroom study',
-  환경: 'environment nature recycle',
-  국제: 'world globe international',
-  미디어: 'media social network smartphone',
-  법: 'law courthouse justice',
-  건강: 'health wellness hospital',
-  스포츠: 'sports stadium competition',
-};
-
-const KEYWORD_QUERIES: Array<{ when: RegExp; query: string }> = [
-  { when: /(설|명절|세뱃돈)/, query: 'korean lunar new year family tradition' },
-  { when: /(태극기|국기|3·1|독립|독립운동)/, query: 'korean flag independence movement' },
-  { when: /(발렌타인|초콜릿)/, query: 'valentines day chocolate heart gift' },
-  { when: /(전기요금|전기료|가스 요금|요금)/, query: 'electricity bill utility bill' },
-  { when: /(귀성|교통|고속도로|KTX|버스)/, query: 'highway traffic travel train station' },
-  { when: /(윷놀이|제기차기|한복|판소리)/, query: 'korean traditional culture festival' },
-  { when: /(눈|한파|겨울)/, query: 'winter snow cold weather' },
-  { when: /(미세먼지|대기질)/, query: 'air pollution smog mask' },
-  { when: /(개학|새 학기|교실)/, query: 'school classroom students' },
-  { when: /(입시|수시|정시|수능|시험)/, query: 'exam study desk textbook' },
-  { when: /(AI|인공지능|챗봇|딥페이크)/, query: 'artificial intelligence robot computer' },
-  { when: /(우주|달|로켓|탐사|누리호)/, query: 'space rocket moon satellite' },
-  { when: /(환율|원화|달러|엔)/, query: 'exchange rate currency dollar yen' },
-  { when: /(전기차|배터리)/, query: 'electric car battery charging' },
-  { when: /(수소)/, query: 'hydrogen energy fuel cell' },
-  { when: /(여성의 날|양성평등|젠더)/, query: 'international womens day equality' },
-  { when: /(벚꽃|봄꽃|진달래|봄)/, query: 'cherry blossom spring flowers' },
-  { when: /(산불)/, query: 'wildfire forest fire prevention' },
-  { when: /(야구)/, query: 'baseball game stadium' },
-  { when: /(축구)/, query: 'soccer football match' },
-  { when: /(농구)/, query: 'basketball game arena' },
-  { when: /(배구)/, query: 'volleyball match indoor' },
-  { when: /(OTT|넷플릭스|웨이브)/, query: 'streaming tv remote couch' },
+/** 키워드 → 실제 그 주제를 담은 Unsplash photo ID (투표=투표용지/투표함, 선거=투표 등) */
+const KEYWORD_IMAGES: Array<{ when: RegExp; id: string }> = [
+  { when: /(투표|선거|민주주의|공약|후보)/, id: '1540910419892-4a36d2c3266c' }, // 투표하는 모습(투표함에 투표지 넣는 손)
+  { when: /(국회|입법|정국|여야|법안)/, id: '1540910419892-4a36d2c3266c' }, // 국회/정치(투표)
+  { when: /(태극기|국기|3·1|독립|독립운동)/, id: '1540914122471-2b16eae459de' }, // 국기
+  { when: /(설|명절|세뱃돈)/, id: '1528360983277-518d751faf61' }, // 설/전통
+  { when: /(발렌타인|초콜릿|사랑)/, id: '1513546483692-cb967e75eb7a' }, // 초콜릿/발렌타인
+  { when: /(전기요금|전기료|가스|요금|에너지)/, id: '1473341304177-3d6342c5b8c6' }, // 전기/요금
+  { when: /(돈|용돈|저축|월급|봉급|경제|물가|인플레이션)/, id: '1579621970563-ebec7560ff3e' }, // 돈/경제
+  { when: /(귀성|교통|고속도로|KTX|버스|수송)/, id: '1544620347-c4fe4d3a4d59' }, // 교통
+  { when: /(윷놀이|제기차기|한복|판소리|전통)/, id: '1528360983277-518d751faf61' }, // 한국 전통
+  { when: /(눈|한파|겨울)/, id: '1491002054626-602b485f489f' }, // 눈/겨울
+  { when: /(미세먼지|대기질|마스크)/, id: '1584305567982-91ec7c132d2f' }, // 미세먼지/마스크
+  { when: /(개학|새 학기|교실|학교)/, id: '1523050854058-24b38136d167' }, // 교실
+  { when: /(입시|수시|정시|수능|시험|수험)/, id: '1434030216841-604d0b114f72' }, // 시험/공부
+  { when: /(AI|인공지능|챗봇|딥페이크)/, id: '1676299082083-2dc7f3d440b4' }, // AI/로봇
+  { when: /(우주|달|로켓|탐사|누리호|스페이스)/, id: '1451187580459-43490279c0e6' }, // 우주
+  { when: /(환율|원화|달러|엔|환전)/, id: '1611972616597-649dce757427' }, // 환율
+  { when: /(전기차|배터리)/, id: '1593941707882-6fc9552d0e76' }, // 전기차
+  { when: /(수소)/, id: '1559757148-5c4a2c950330' }, // 수소
+  { when: /(여성의 날|양성평등|젠더)/, id: '1594489507012-925abef0ed5c' }, // 여성/평등
+  { when: /(벚꽃|봄꽃|진달래|봄)/, id: '1523241287236-6470d976904f' }, // 봄꽃
+  { when: /(산불)/, id: '1534368959575-1927319b2c05' }, // 산불
+  { when: /(야구)/, id: '1574629810360-7efbe195a735' }, // 야구
+  { when: /(축구)/, id: '1542751371-adc38448a05e' }, // 축구
+  { when: /(농구|배구)/, id: '1546519638-af2f498e742f' }, // 농구/배구
+  { when: /(OTT|넷플릭스|웨이브|스트리밍)/, id: '1611162616475-46b6352e64ce' }, // OTT
+  { when: /(친구|도와|반|다문화|공동체)/, id: '1529156069898-49953e39b3ac' }, // 친구/공동체
+  { when: /(가족|할머니|이웃)/, id: '1529156069898-49953e39b3ac' }, // 가족/이웃
+  { when: /(법|법원|소년법|인권)/, id: '1589829545856-d10d557cf95f' }, // 법
+  { when: /(건강|정신건강|운동|수면)/, id: '1544367567-0f2fcb009e0b' }, // 건강
+  { when: /(e스포츠|게임)/, id: '1542751371-adc38448a05e' }, // e스포츠
 ];
 
-function pickQuery(text: string, section: string): string {
-  for (const rule of KEYWORD_QUERIES) {
-    if (rule.when.test(text)) return rule.query;
-  }
-  return SECTION_QUERIES[section] ?? 'news';
-}
+const SECTION_IMAGES: Record<string, string> = {
+  정치: U('1540910419892-4a36d2c3266c'),
+  경제: U('1579621970563-ebec7560ff3e'),
+  사회: U('1529156069898-49953e39b3ac'),
+  문화: U('1528360983277-518d751faf61'),
+  과학: U('1451187580459-43490279c0e6'),
+  교육: U('1503676260728-1c00da094a0b'),
+  환경: U('1542601906990-b4d3fb778b09'),
+  국제: U('1524661135-423995f22d0b'),
+  미디어: U('1611162616475-46b6352e64ce'),
+  법: U('1589829545856-d10d557cf95f'),
+  건강: U('1544367567-0f2fcb009e0b'),
+  스포츠: U('1542751371-adc38448a05e'),
+};
 
 function getImageUrlForArticle(params: {
-  weekNumber: number;
   section: string;
-  level: Level;
   title: string;
   summary: string;
 }): string {
-  const { weekNumber, section, level, title, summary } = params;
-  const text = `${section} ${title} ${summary}`;
-  const query = pickQuery(text, section);
-  const levelOffset = level === 'elementary' ? 10 : level === 'middle' ? 20 : 30;
-  const sig = weekNumber * 100 + levelOffset;
-  return SOURCE(query, sig);
+  const text = `${params.section} ${params.title} ${params.summary}`;
+  for (const rule of KEYWORD_IMAGES) {
+    if (rule.when.test(text)) return U(rule.id);
+  }
+  return SECTION_IMAGES[params.section] ?? U('1540910419892-4a36d2c3266c');
 }
 
 /** 1~6호별 섹션 주제 (제목·요약 중심, body는 기본+주제 맞게 요약) */
@@ -311,9 +309,7 @@ export function getArticleForWeek(
   const draftTitle = theme?.title ?? base.title;
   const draftSummary = theme?.summary ?? base.summary;
   const imageUrl = getImageUrlForArticle({
-    weekNumber,
     section,
-    level,
     title: draftTitle,
     summary: draftSummary,
   }) || base.imageUrl;
