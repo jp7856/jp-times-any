@@ -20,14 +20,14 @@ export function ArticleCard({ article, issueLabel, level, compact }: ArticleCard
       className="block bg-white rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
     >
       <div
-        className={`bg-gray-100 relative ${
-          compact ? 'aspect-video' : 'aspect-[400/240]'
+        className={`bg-gray-100 relative overflow-hidden ${
+          compact ? 'aspect-video' : 'aspect-[4/3]'
         }`}
       >
         <img
           src={imageUrl}
           alt=""
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
       </div>
