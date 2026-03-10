@@ -1,5 +1,5 @@
 /**
- * 1~6호별 다른 기사 - 해당 주에 이슈된 주제
+ * 1~6호별 다른 기사 - 해당 주에 이슈된 주제 + 핵심 키워드에 맞는 이미지
  * 주차: 1=2/2, 2=2/9, 3=2/16, 4=2/23, 5=3/2, 6=3/9
  */
 
@@ -11,6 +11,80 @@ import {
   SECTIONS_HIGH,
 } from '@/data/sectionArticles';
 import type { Level } from '@/lib/constants';
+
+const U = (id: string) => `https://images.unsplash.com/photo-${id}?w=800&q=80`;
+
+/** 주차별·섹션별 기사 핵심 키워드에 맞는 이미지 (Unsplash) */
+const WEEK_IMAGES: Record<number, Record<string, Partial<Record<Level, string>>>> = {
+  // 1호: 설날·국기, 세뱃돈, 전기요금, 귀성길, 윷놀이, 눈/한파, OTT, 동계스포츠
+  1: {
+    정치: { elementary: U('1540914122471-2b16eae459de'), middle: U('1540914122471-2b16eae459de'), high: U('1540914122471-2b16eae459de') },
+    경제: { elementary: U('1553729459-0feda8a5386f'), middle: U('1473341304177-3d6342c5b8c6'), high: U('1473341304177-3d6342c5b8c6') },
+    사회: { elementary: U('1529156069898-49953e39b3ac'), middle: U('1544620347-c4fe4d3a4d59'), high: U('1544620347-c4fe4d3a4d59') },
+    문화: { elementary: U('1528360983277-518d751faf61'), middle: U('1528360983277-518d751faf61'), high: U('1611162616475-46b6352e64ce') },
+    과학: { elementary: U('1491002054626-602b485f489f'), middle: U('1542601906990-b4d3fb778b09'), high: U('1542601906990-b4d3fb778b09') },
+    교육: { middle: U('1503676260728-1c00da094a0b'), high: U('1503676260728-1c00da094a0b') },
+    환경: { middle: U('1532601224466-604f82a89254'), high: U('1542601906990-b4d3fb778b09') },
+    국제: { middle: U('1524661135-423995f22d0b'), high: U('1524661135-423995f22d0b') },
+    미디어: { high: U('1611162616475-46b6352e64ce') },
+    법: { high: U('1589829545856-d10d557cf95f') },
+    건강: { high: U('1544367567-0f2fcb009e0b') },
+    스포츠: { high: U('1551522435-a89afa12578c') },
+  },
+  // 2호: 발렌타인(초콜릿), 입시
+  2: {
+    문화: { elementary: U('1513546483692-cb967e75eb7a'), middle: U('1513546483692-cb967e75eb7a'), high: U('1611162616475-46b6352e64ce') },
+    교육: { middle: U('1434030216841-604d0b114f72'), high: U('1434030216841-604d0b114f72') },
+  },
+  // 3호: 국기/3·1절, 구직, 개학, AI, 미세먼지, 우주, 프로야구
+  3: {
+    정치: { elementary: U('1540914122471-2b16eae459de'), middle: U('1540914122471-2b16eae459de'), high: U('1540914122471-2b16eae459de') },
+    경제: { elementary: U('1553729459-0feda8a5386f'), middle: U('1521737715017-d6805ec7ed54'), high: U('1560518883-ce09059e6725') },
+    사회: { elementary: U('1523050854058-24b38136d167'), middle: U('1523050854058-24b38136d167'), high: U('1517245385427-6c4a9e64a108') },
+    문화: { elementary: U('1528360983277-518d751faf61'), middle: U('1493225457124-ccbcddeba207'), high: U('1611162616475-46b6352e64ce') },
+    과학: { elementary: U('1490750967868-88aa4986a51c'), middle: U('1676299082083-2dc7f3d440b4'), high: U('1676299082083-2dc7f3d440b4') },
+    환경: { middle: U('1584305567982-91ec7c132d2f'), high: U('1509391366360-2e77ee52d5d2') },
+    국제: { middle: U('1524661135-423995f22d0b'), high: U('1568967729541-096375bef6e8') },
+    미디어: { high: U('1676299082083-2dc7f3d440b4') },
+    법: { high: U('1589829545856-d10d557cf95f') },
+    건강: { high: U('1515378791036-0648b3d77beb') },
+    스포츠: { high: U('1574629810360-7efbe195a735') },
+  },
+  // 4호: 3·1절/독립, 환율, 한복/한류, 우주, 축구
+  4: {
+    정치: { elementary: U('1540914122471-2b16eae459de'), middle: U('1540914122471-2b16eae459de'), high: U('1540914122471-2b16eae459de') },
+    경제: { elementary: U('1579621970563-ebec7560ff3e'), middle: U('1611972616597-649dce757427'), high: U('1568967729541-096375bef6e8') },
+    사회: { elementary: U('1529156069898-49953e39b3ac'), middle: U('1600887012170-422167697c84'), high: U('1551836022-deb4028e63ab') },
+    문화: { elementary: U('1528360983277-518d751faf61'), middle: U('1611162616475-46b6352e64ce'), high: U('1511671782779-c97d3d27a1d4') },
+    과학: { elementary: U('1507003211169-0a1dd7228f2d'), middle: U('1451187580459-43490279c0e6'), high: U('1446776811953-b67d9627a4f3') },
+    환경: { middle: U('1532992742220-6ac5bc4d8b62'), high: U('1542601906990-b4d3fb778b09') },
+    국제: { middle: U('1473341304177-3d6342c5b8c6'), high: U('1524661135-423995f22d0b') },
+    미디어: { high: U('1611162616475-46b6352e64ce') },
+    법: { high: U('1589829545856-d10d557cf95f') },
+    건강: { high: U('1544367567-0f2fcb009e0b') },
+    스포츠: { high: U('1542751371-adc38448a05e') },
+  },
+  // 5호: 국방, 전기차/수소, 교통안전, 판소리, 농구·배구
+  5: {
+    정치: { elementary: U('1540914122471-2b16eae459de'), middle: U('1524661135-423995f22d0b'), high: U('1540914122471-2b16eae459de') },
+    경제: { elementary: U('1579621970563-ebec7560ff3e'), middle: U('1579621970563-ebec7560ff3e'), high: U('1576092764391-3510ef7972a3') },
+    사회: { elementary: U('1544620347-c4fe4d3a4d59'), middle: U('1544620347-c4fe4d3a4d59'), high: U('1524661135-423995f22d0b') },
+    문화: { elementary: U('1528360983277-518d751faf61'), middle: U('1611162616475-46b6352e64ce'), high: U('1611162616475-46b6352e64ce') },
+    과학: { elementary: U('1581092160569-d6d2e7635a44'), middle: U('1593941707882-6fc9552d0e76'), high: U('1559757148-5c4a2c950330') },
+    환경: { middle: U('1532992742220-6ac5bc4d8b62'), high: U('1542601906990-b4d3fb778b09') },
+    국제: { middle: U('1524661135-423995f22d0b'), high: U('1524661135-423995f22d0b') },
+    미디어: { high: U('1611162616475-46b6352e64ce') },
+    법: { high: U('1589829545856-d10d557cf95f') },
+    건강: { high: U('1571019613454-1cb2f99b2d8b') },
+    스포츠: { high: U('1546519638-af2f498e742f') },
+  },
+  // 6호: 여성의날, 봄꽃, 산불
+  6: {
+    사회: { elementary: U('1529156069898-49953e39b3ac'), middle: U('1594489507012-925abef0ed5c'), high: U('1594489507012-925abef0ed5c') },
+    문화: { elementary: U('1523241287236-6470d976904f'), middle: U('1469472748027-16bed6bbe01e'), high: U('1611162616475-46b6352e64ce') },
+    환경: { middle: U('1534368959575-1927319b2c05'), high: U('1542601906990-b4d3fb778b09') },
+  },
+};
 
 /** 1~6호별 섹션 주제 (제목·요약 중심, body는 기본+주제 맞게 요약) */
 const WEEK_THEMES: Record<number, Record<string, Partial<Record<Level, { title: string; summary: string; body?: string }>>>> = {
@@ -231,7 +305,7 @@ function getWeekIndex(weekNumber: number): number {
   return ((weekNumber - 1) % 6) + 1;
 }
 
-/** 주차별로 다른 기사 반환 (1~6호는 각 주 이슈, 7호+는 1~6 순환) */
+/** 주차별로 다른 기사 반환 (1~6호는 각 주 이슈+해당 이미지, 7호+는 1~6 순환) */
 export function getArticleForWeek(
   weekNumber: number,
   section: string,
@@ -242,13 +316,15 @@ export function getArticleForWeek(
 
   const weekIdx = getWeekIndex(weekNumber);
   const theme = WEEK_THEMES[weekIdx]?.[section]?.[level];
+  const imageUrl = WEEK_IMAGES[weekIdx]?.[section]?.[level] ?? base.imageUrl;
 
-  if (!theme) return base;
+  if (!theme) return { ...base, imageUrl };
 
   return {
     ...base,
     title: theme.title,
     summary: theme.summary,
+    imageUrl,
     ...(theme.body && { body: theme.body }),
   };
 }
