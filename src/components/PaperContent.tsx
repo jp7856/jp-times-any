@@ -92,7 +92,11 @@ export function PaperContent({ level }: { level: Level }) {
             <p>이 주의 기사가 아직 없습니다.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+          <div
+            className={`grid grid-cols-2 ${
+              level === 'elementary' ? 'gap-2 sm:gap-3' : 'gap-1.5 sm:gap-2'
+            }`}
+          >
             {articles.map((article) => (
               <ArticleCard
                 key={article.id}
