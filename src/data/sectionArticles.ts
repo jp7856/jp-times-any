@@ -21,8 +21,31 @@ export const SECTIONS_ELEMENTARY = ['정치', '경제', '사회', '문화', '과
 export const SECTIONS_MIDDLE = ['정치', '경제', '사회', '문화', '과학', '교육', '환경', '국제'] as const;
 export const SECTIONS_HIGH = ['정치', '경제', '사회', '문화', '과학', '교육', '환경', '국제', '미디어', '법', '건강', '스포츠'] as const;
 
-const img = (id: string) =>
-  `https://picsum.photos/seed/${encodeURIComponent(id)}/800/450`;
+/** 주제별 이미지 (Unsplash - 주제와 맞는 무료 이미지) */
+const TOPIC_IMAGES: Record<string, string> = {
+  정치: 'https://images.unsplash.com/photo-1540914122471-2b16eae459de?w=800&q=80', // 투표
+  경제: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80', // 돈/경제
+  사회: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80', // 공동체
+  문화: 'https://images.unsplash.com/photo-1528360983277-518d751faf61?w=800&q=80', // 한국 전통
+  과학: 'https://images.unsplash.com/photo-1451187580459-43490279c0e6?w=800&q=80', // 우주/과학
+  교육: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80', // 교육
+  환경: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80', // 자연/환경
+  국제: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80', // 지구/국제
+  미디어: 'https://images.unsplash.com/photo-1611162616475-46b6352e64ce?w=800&q=80', // 소셜미디어
+  법: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80', // 법/법원
+  건강: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80', // 웰니스/명상
+  스포츠: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80', // e스포츠/게임
+};
+
+const idToTopic: Record<string, string> = {
+  politics: '정치', economy: '경제', society: '사회', culture: '문화',
+  science: '과학', education: '교육', environment: '환경', international: '국제',
+  media: '미디어', law: '법', health: '건강', sports: '스포츠',
+};
+const img = (id: string) => {
+  const topic = idToTopic[id.split('-')[0]] ?? id;
+  return TOPIC_IMAGES[topic] || `https://picsum.photos/seed/${id}/800/450`;
+};
 
 /** 섹션별 기사 - 각 섹션·난이도마다 완전히 다른 내용 */
 export const SECTION_ARTICLES: Record<string, SectionArticleSet> = {

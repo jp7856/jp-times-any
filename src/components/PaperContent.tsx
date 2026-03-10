@@ -117,19 +117,43 @@ export function PaperContent({ level }: { level: Level }) {
           </div>
         ) : (
           <>
-            {/* 섹션별 기사 - 각 섹션마다 완전히 다른 기사+이미지 */}
+            {/* 섹션별 기사 - 한 화면에 모두 표시 (중등·고등은 컴팩트) */}
             {sortedCategories.map((category) => (
-              <section key={category} className="mb-8">
-                <h3 className="text-base font-bold text-gray-800 border-l-4 border-emerald-600 pl-3 mb-4">
+              <section
+                key={category}
+                className={
+                  level === 'elem'
+                    ? 'mb-6'
+                    : level === 'mid'
+                      ? 'mb-4'
+                      : 'mb-3'
+                }
+              >
+                <h3
+                  className={
+                    level === 'elem'
+                      ? 'text-base font-bold text-gray-800 border-l-4 border-emerald-600 pl-3 mb-3'
+                      : 'text-sm font-bold text-gray-800 border-l-2 border-emerald-600 pl-2 mb-2'
+                  }
+                >
                   {category}
                 </h3>
-                <ul className="grid grid-cols-2 gap-4 sm:gap-5">
+                <ul
+                  className={`grid gap-2 sm:gap-3 ${
+                    level === 'elem'
+                      ? 'grid-cols-2'
+                      : level === 'mid'
+                        ? 'grid-cols-2 sm:grid-cols-4'
+                        : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+                  }`}
+                >
                   {groupedByCategory[category].map((article) => (
                     <li key={article.id}>
                       <ArticleCard
                         article={article}
                         issueLabel={`제${issueNumber}호_${formatIssueDateShort(issueDate)}`}
                         level={level}
+                        compact={level === 'mid' || level === 'high'}
                       />
                     </li>
                   ))}
