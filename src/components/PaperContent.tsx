@@ -45,9 +45,9 @@ export function PaperContent({ level }: { level: Level }) {
 
   return (
     <>
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-3 sm:py-4">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-2 sm:py-3">
         {/* 호수 선택 */}
-        <div className="mb-2">
+        <div className="mb-1.5">
           <label htmlFor="issue-select" className="text-sm font-medium text-[var(--color-ink)] mr-2">
             기사 읽기
           </label>
@@ -92,7 +92,7 @@ export function PaperContent({ level }: { level: Level }) {
             <p>이 주의 기사가 아직 없습니다.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
             {articles.map((article) => (
               <ArticleCard
                 key={article.id}
@@ -105,7 +105,7 @@ export function PaperContent({ level }: { level: Level }) {
           </div>
         )}
 
-        <footer className="mt-6 pt-3 text-center text-sm text-gray-500">
+        <footer className="mt-4 pt-2 text-center text-xs text-gray-500">
           JP Times · {LEVEL_LABELS[level]}
         </footer>
       </main>

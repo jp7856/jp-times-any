@@ -21,7 +21,7 @@ export function ArticleCard({ article, issueLabel, level, compact }: ArticleCard
     >
       <div
         className={`bg-gray-100 relative overflow-hidden ${
-          compact ? 'aspect-video' : 'aspect-[4/3]'
+          compact ? 'h-14 sm:h-16' : 'aspect-[4/3]'
         }`}
       >
         <img
@@ -31,11 +31,11 @@ export function ArticleCard({ article, issueLabel, level, compact }: ArticleCard
           loading="lazy"
         />
       </div>
-      <div className={compact ? 'p-2' : 'p-3 sm:p-4'}>
+      <div className={compact ? 'p-1.5' : 'p-3 sm:p-4'}>
         <div className="flex items-center gap-1.5 mb-0.5">
           <span
             className={`font-medium text-emerald-600 bg-emerald-50 rounded ${
-              compact ? 'text-[10px] px-1 py-0.5' : 'text-xs px-1.5 py-0.5'
+              compact ? 'text-[9px] px-1 py-0.5' : 'text-xs px-1.5 py-0.5'
             }`}
           >
             {article.category}
@@ -44,7 +44,7 @@ export function ArticleCard({ article, issueLabel, level, compact }: ArticleCard
         </div>
         <h3
           className={`font-headline font-bold text-[var(--color-ink)] leading-snug line-clamp-2 ${
-            compact ? 'text-xs' : 'text-base sm:text-lg'
+            compact ? 'text-[11px] leading-tight' : 'text-base sm:text-lg'
           }`}
         >
           {article.title}
