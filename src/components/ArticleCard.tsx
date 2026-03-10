@@ -36,9 +36,12 @@ const CARD_STYLES: Record<
 };
 
 export function ArticleCard({ article, issueLabel, level, compact }: ArticleCardProps) {
-  const imageUrl =
+  const primaryImageUrl =
     article.imageUrl ||
-    `https://picsum.photos/seed/${encodeURIComponent(article.id)}/400/240`;
+    `https://picsum.photos/seed/${encodeURIComponent(article.id)}/800/600`;
+  const fallbackImageUrl = `https://picsum.photos/seed/${encodeURIComponent(
+    `${article.id}-fallback`
+  )}/800/600`;
   const style = CARD_STYLES[level];
 
   return (
@@ -48,10 +51,17 @@ export function ArticleCard({ article, issueLabel, level, compact }: ArticleCard
     >
       <div className={`bg-gray-100 relative overflow-hidden ${style.image}`}>
         <img
-          src={imageUrl}
-          alt=""
+          src={primaryImageUrl}
+          alt={article.title}
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            const img = e.currentTarget;
+            if (img.dataset.fallback === '1') return;
+            img.dataset.fallback = '1';
+            img.src = fallbackImageUrl;
+          }}
         />
       </div>
       <div className={style.padding}>
