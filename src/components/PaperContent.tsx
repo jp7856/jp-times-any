@@ -117,10 +117,7 @@ export function PaperContent({ level }: { level: Level }) {
           </div>
         ) : (
           <>
-            {issue?.theme && (
-              <p className="text-sm text-gray-600 mb-4">{issue.theme}</p>
-            )}
-            {/* NE Times 스타일: 카테고리별 기사 섹션 */}
+            {/* 섹션별 기사 - 각 섹션마다 완전히 다른 기사+이미지 */}
             {sortedCategories.map((category) => (
               <section key={category} className="mb-8">
                 <h3 className="text-base font-bold text-gray-800 border-l-4 border-emerald-600 pl-3 mb-4">
