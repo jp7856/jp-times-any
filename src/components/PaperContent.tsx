@@ -122,16 +122,16 @@ export function PaperContent({ level }: { level: Level }) {
               <section
                 key={category}
                 className={
-                  level === 'elem'
+                  level === 'elementary'
                     ? 'mb-6'
-                    : level === 'mid'
+                    : level === 'middle'
                       ? 'mb-4'
                       : 'mb-3'
                 }
               >
                 <h3
                   className={
-                    level === 'elem'
+                    level === 'elementary'
                       ? 'text-base font-bold text-gray-800 border-l-4 border-emerald-600 pl-3 mb-3'
                       : 'text-sm font-bold text-gray-800 border-l-2 border-emerald-600 pl-2 mb-2'
                   }
@@ -140,9 +140,9 @@ export function PaperContent({ level }: { level: Level }) {
                 </h3>
                 <ul
                   className={`grid gap-2 sm:gap-3 ${
-                    level === 'elem'
+                    level === 'elementary'
                       ? 'grid-cols-2'
-                      : level === 'mid'
+                      : level === 'middle'
                         ? 'grid-cols-2 sm:grid-cols-4'
                         : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
                   }`}
@@ -153,7 +153,7 @@ export function PaperContent({ level }: { level: Level }) {
                         article={article}
                         issueLabel={`제${issueNumber}호_${formatIssueDateShort(issueDate)}`}
                         level={level}
-                        compact={level === 'mid' || level === 'high'}
+                        compact={level === 'middle' || level === 'high'}
                       />
                     </li>
                   ))}
