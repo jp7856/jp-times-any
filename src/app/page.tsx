@@ -56,8 +56,25 @@ export default function HomePage() {
           ))}
         </ul>
 
-        <footer className="mt-12 pt-6 border-t border-[var(--color-border)] text-center text-sm text-gray-500">
-          JP Times · 주간 이슈 한글 신문
+        {/* 구독·결제 및 푸터 */}
+        <footer className="mt-12 pt-8 pb-6 border-t border-[var(--color-border)]">
+          <div className="flex flex-col items-center gap-4">
+            <Link
+              href="/subscribe"
+              className="w-full max-w-xs rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 px-6 text-center transition-colors touch-target"
+            >
+              구독·결제
+            </Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-blue-600">
+              <a href="/" className="hover:underline">
+                모바일에서 보기
+              </a>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-600">© JP 타임즈</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-gray-600">토스페이먼츠 결제</span>
+            </div>
+          </div>
         </footer>
       </main>
     </div>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Article } from '@/types/article';
 import { LEVEL_LABELS, type Level } from '@/lib/constants';
 
@@ -13,7 +14,10 @@ export function ArticleCard({ article, issueLabel, level }: ArticleCardProps) {
     `https://picsum.photos/seed/${encodeURIComponent(article.id)}/400/240`;
 
   return (
-    <article className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+    <Link
+      href={`/paper/${level}/article/${article.id}`}
+      className="block bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+    >
       <div className="aspect-[400/240] bg-gray-100 relative">
         <img
           src={imageUrl}
@@ -31,6 +35,6 @@ export function ArticleCard({ article, issueLabel, level }: ArticleCardProps) {
           JP 타임즈 · {LEVEL_LABELS[level]}
         </p>
       </div>
-    </article>
+    </Link>
   );
 }
