@@ -65,7 +65,6 @@ export default async function ArticleDetailPage({
             src={imageUrl}
             alt={article.title}
             className="w-full aspect-video object-cover"
-            priority
           />
         </figure>
 
