@@ -1,6 +1,7 @@
 import type { Level } from '@/lib/constants';
 import type { Article, WeeklyIssue } from '@/types/article';
 import { getIssueDateByWeekNumber } from '@/lib/weekUtils';
+import { getThemeData } from '@/data/articleContents';
 
 /** 1~6주차 테마. 7주차 이후는 이 테마를 순환해 사용합니다. */
 const ISSUE_WEEK_COUNT = 6;
@@ -227,6 +228,31 @@ function expandLevelArticles(
 export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
   const issueDate = getIssueDateByWeekNumber(weekNumber);
   const dataIndex = ((weekNumber - 1) % ISSUE_WEEK_COUNT) + 1;
+  const themeData = getThemeData(dataIndex);
+
+  if (themeData) {
+    const articles: Article[] = [];
+    const levelKeys: { key: Level; prefix: string }[] = [
+      { key: 'elementary', prefix: 'e' },
+      { key: 'middle', prefix: 'm' },
+      { key: 'high', prefix: 'h' },
+    ];
+    levelKeys.forEach(({ key, prefix }) => {
+      const list = themeData[key];
+      list.forEach((a, i) => {
+        articles.push({
+          id: `${weekNumber}-${dataIndex}-${prefix}-${i + 1}`,
+          title: a.title,
+          summary: a.summary,
+          body: a.body,
+          category: a.category,
+          level: key,
+        });
+      });
+    });
+    return { weekNumber, issueDate, theme: themeData.theme, articles };
+  }
+
   const data = ISSUES_BY_WEEK[dataIndex];
   if (!data) {
     return {
