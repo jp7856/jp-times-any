@@ -27,7 +27,12 @@ export function ArticleCard({ article, issueLabel, level }: ArticleCardProps) {
         />
       </div>
       <div className="p-3 sm:p-4">
-        <p className="text-xs text-gray-500 mb-1">{issueLabel}</p>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+            {article.category}
+          </span>
+          <p className="text-xs text-gray-500">{issueLabel}</p>
+        </div>
         <h3 className="font-headline text-base sm:text-lg font-bold text-[var(--color-ink)] leading-snug line-clamp-2">
           {article.title}
         </h3>

@@ -43,20 +43,39 @@ export function PaperContent({ level }: { level: Level }) {
     router.push(url);
   }
 
+  const groupedByCategory = articles.reduce<Record<string, typeof articles>>(
+    (acc, a) => {
+      const cat = a.category || '기타';
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(a);
+      return acc;
+    },
+    {}
+  );
+  const categoryOrder = ['정치', '경제', '사회', '문화', '과학', '교육', '환경', '국제', '미디어', '법', '건강', '스포츠', '세계', '기타'];
+  const sortedCategories = Object.keys(groupedByCategory).sort(
+    (a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b)
+  );
+
   return (
     <>
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-5 sm:py-6">
-        {/* 호수 선택 */}
+        {/* NE Times 스타일: 기사 읽기 안내 */}
+        <p className="text-sm text-gray-600 mb-4">
+          이번 주 JP 타임즈에는 어떤 뉴스들이 담겨 있는지 확인해 보세요.
+        </p>
+
+        {/* 호수 선택 (NE Times: [1064호] 2026.03.09 형식 참고) */}
         <div className="mb-5">
-          <label htmlFor="issue-select" className="text-sm text-gray-600 mr-2">
-            호수
+          <label htmlFor="issue-select" className="text-sm font-medium text-[var(--color-ink)] mr-2">
+            기사 읽기
           </label>
-          <div className="relative inline-block min-w-[200px] sm:min-w-[240px]">
+          <div className="relative inline-block min-w-[200px] sm:min-w-[260px]">
             <select
               id="issue-select"
               value={validWeek}
               onChange={(e) => handleIssueChange(Number(e.target.value))}
-              className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-9 py-2.5 text-[var(--color-ink)] text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+              className="w-full appearance-none bg-white border-2 border-gray-300 rounded-lg pl-3 pr-9 py-2.5 text-[var(--color-ink)] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               aria-label="호수 선택"
             >
               {recentWeeks.map((w) => {
@@ -64,7 +83,7 @@ export function PaperContent({ level }: { level: Level }) {
                 const num = ISSUE_NUMBER_BASE + w;
                 return (
                   <option key={w} value={w}>
-                    {num}호 ({formatIssueDateShort(d)})
+                    [{num}호] {formatIssueDateShort(d)}
                   </option>
                 );
               })}
@@ -80,7 +99,7 @@ export function PaperContent({ level }: { level: Level }) {
           </div>
         </div>
 
-        {/* 섹션 제목: 초등 기사 / 중등 기사 / 고등 기사 (녹색 + 밑줄) */}
+        {/* 섹션 제목: 초등 기사 / 중등 기사 / 고등 기사 (녹색 + 밑줄, NE Times 스타일) */}
         <h2 className="text-xl sm:text-2xl font-bold text-emerald-700 border-b-2 border-emerald-700 pb-2 mb-5">
           {LEVEL_SECTION_HEADING[level]}
         </h2>
@@ -101,17 +120,25 @@ export function PaperContent({ level }: { level: Level }) {
             {issue?.theme && (
               <p className="text-sm text-gray-600 mb-4">{issue.theme}</p>
             )}
-            <ul className="grid grid-cols-2 gap-4 sm:gap-5">
-              {articles.map((article) => (
-                <li key={article.id}>
-                  <ArticleCard
-                    article={article}
-                    issueLabel={`제${issueNumber}호_${formatIssueDateShort(issueDate)}`}
-                    level={level}
-                  />
-                </li>
-              ))}
-            </ul>
+            {/* NE Times 스타일: 카테고리별 기사 섹션 */}
+            {sortedCategories.map((category) => (
+              <section key={category} className="mb-8">
+                <h3 className="text-base font-bold text-gray-800 border-l-4 border-emerald-600 pl-3 mb-4">
+                  {category}
+                </h3>
+                <ul className="grid grid-cols-2 gap-4 sm:gap-5">
+                  {groupedByCategory[category].map((article) => (
+                    <li key={article.id}>
+                      <ArticleCard
+                        article={article}
+                        issueLabel={`제${issueNumber}호_${formatIssueDateShort(issueDate)}`}
+                        level={level}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
           </>
         )}
 
