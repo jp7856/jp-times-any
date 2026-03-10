@@ -60,6 +60,15 @@ export default async function ArticleDetailPage({
       </header>
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-6">
+        <figure className="mb-4 rounded-xl overflow-hidden border border-gray-200 -mx-4 sm:mx-0">
+          <img
+            src={imageUrl}
+            alt={article.title}
+            className="w-full aspect-video object-cover"
+            priority
+          />
+        </figure>
+
         <p className="text-xs text-gray-500 mb-1">{issueLabel}</p>
         <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
           {article.category}
@@ -69,14 +78,6 @@ export default async function ArticleDetailPage({
         </h1>
         <p className="text-sm text-gray-600 mt-2">{article.summary}</p>
         <p className="text-xs text-gray-500 mt-3">JP 타임즈 · {LEVEL_LABELS[level]}</p>
-
-        <figure className="mt-6 rounded-xl overflow-hidden border border-gray-200">
-          <img
-            src={imageUrl}
-            alt=""
-            className="w-full aspect-video object-cover"
-          />
-        </figure>
 
         <div className="mt-6 prose prose-gray max-w-none">
           <div className="text-[var(--color-ink)] leading-relaxed whitespace-pre-line">
