@@ -22,7 +22,7 @@ export default function HomePage() {
             JP Times
           </h1>
           <p className="text-center text-sm text-gray-600 mt-1">
-            매주 월요일 발행 · 2월 2일 시작
+            매주 월요일 발행 · 2026년 2월 2일 1호
           </p>
         </div>
       </header>

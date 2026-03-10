@@ -2,6 +2,9 @@ import type { Level } from '@/lib/constants';
 import type { Article, WeeklyIssue } from '@/types/article';
 import { getIssueDateByWeekNumber } from '@/lib/weekUtils';
 
+/** 1~6주차 테마. 7주차 이후는 이 테마를 순환해 사용합니다. */
+const ISSUE_WEEK_COUNT = 6;
+
 /** 주차별 이슈 테마와 기사 (레벨별). 실제 서비스에서는 API로 주간 이슈를 가져올 수 있습니다. */
 const ISSUES_BY_WEEK: Record<
   number,
@@ -175,10 +178,11 @@ function attachLevel(
   }));
 }
 
-/** 주차 번호로 해당 주의 이슈(레벨별 기사 포함) 반환 */
+/** 주차 번호로 해당 주의 이슈(레벨별 기사 포함) 반환. 7주차 이후는 1~6주차 테마를 순환해 항상 기사가 보이게 합니다. */
 export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
   const issueDate = getIssueDateByWeekNumber(weekNumber);
-  const data = ISSUES_BY_WEEK[weekNumber];
+  const dataIndex = ((weekNumber - 1) % ISSUE_WEEK_COUNT) + 1;
+  const data = ISSUES_BY_WEEK[dataIndex];
   if (!data) {
     return {
       weekNumber,
@@ -188,7 +192,10 @@ export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
     };
   }
   const levels: Level[] = ['elementary', 'middle', 'high'];
-  const articles = attachLevel(data.articles, levels);
+  const articles = attachLevel(data.articles, levels).map((a) => ({
+    ...a,
+    id: `${weekNumber}-${a.id}`,
+  }));
   return {
     weekNumber,
     issueDate,

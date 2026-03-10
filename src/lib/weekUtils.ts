@@ -11,7 +11,7 @@ export function getThisWeekMonday(): Date {
   return monday;
 }
 
-/** 첫 발행일(2월 2일)의 월요일. 2025-02-02가 일요일이면 그 주 월요일은 1/27 */
+/** 1호 발행일(2026-02-02 월요일)이 속한 주의 월요일 */
 function getFirstMonday(): Date {
   const d = new Date(FIRST_ISSUE_DATE);
   const day = d.getDay();
@@ -59,4 +59,12 @@ export function getCurrentWeekNumber(): number {
 /** 날짜 포맷 (예: 2025년 2월 3일) */
 export function formatIssueDate(date: Date): string {
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+}
+
+/** 호수 표기용 짧은 날짜 (예: 2026.02.09) */
+export function formatIssueDateShort(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}.${m}.${d}`;
 }
