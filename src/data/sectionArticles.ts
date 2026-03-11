@@ -8,6 +8,8 @@ export type SectionArticleInput = {
   summary: string;
   body: string;
   imageUrl?: string;
+  /** 기사에서 뽑은 핵심 키워드(이미지 매칭에 사용) */
+  keyPhrases?: string[];
 };
 
 export type SectionArticleSet = {

@@ -8,6 +8,8 @@ export interface Article {
   category: string;
   level: Level;
   imageUrl?: string;
+  /** 기사 하단에 표시하는 핵심 키워드 (이 키워드 기준으로 이미지 매칭) */
+  keyPhrases?: string[];
 }
 
 export interface WeeklyIssue {

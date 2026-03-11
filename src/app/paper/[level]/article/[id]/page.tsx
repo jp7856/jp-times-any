@@ -42,8 +42,10 @@ export default async function ArticleDetailPage({
     article.imageUrl ||
     `https://picsum.photos/seed/${encodeURIComponent(article.id)}/800/450`;
 
+  // 기사 저장 시 뽑은 키워드 사용 (이 키워드 기준으로 이미지도 매칭됨)
   const fullText = `${article.title} ${article.summary} ${article.body ?? ''}`;
-  const keyPhrases = getKeyPhrasesForArticle(fullText, level);
+  const displayPhrases =
+    article.keyPhrases?.length ? article.keyPhrases : getKeyPhrasesForArticle(fullText, level);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -69,6 +71,7 @@ export default async function ArticleDetailPage({
             src={imageUrl}
             alt={article.title}
             className="w-full aspect-video object-cover"
+            referrerPolicy="no-referrer"
           />
         </figure>
 
@@ -88,13 +91,13 @@ export default async function ArticleDetailPage({
           </div>
         </div>
 
-        {keyPhrases.length > 0 && (
+        {displayPhrases.length > 0 && (
           <div className="mt-6 pt-4 border-t border-gray-200">
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5">
               핵심 키워드
             </p>
             <p className="text-sm text-[var(--color-ink)]">
-              {keyPhrases.join(' · ')}
+              {displayPhrases.join(' · ')}
             </p>
           </div>
         )}

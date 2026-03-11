@@ -103,6 +103,31 @@ const KEYWORD_COUNT_BY_LEVEL: Record<Level, number> = {
   high: 8,
 };
 
+/** 핵심 키워드 → 레벨별 이미지 ID (키워드 기준 이미지 매칭용) */
+const PHRASE_TO_IMAGE_IDS: Record<string, LevelIds> = {};
+for (const phrase of KEY_PHRASES) {
+  if (PHRASE_TO_IMAGE_IDS[phrase]) continue;
+  for (const rule of KEYWORD_IMAGES) {
+    if (rule.when.test(phrase)) {
+      PHRASE_TO_IMAGE_IDS[phrase] = rule.ids;
+      break;
+    }
+  }
+}
+
+/** 뽑은 핵심 키워드 순서대로 이미지 매칭 → 하단에 나오는 키워드와 이미지 일치 */
+function getImageUrlFromKeyPhrases(
+  keyPhrases: string[],
+  level: Level,
+  section: string
+): string | null {
+  for (const phrase of keyPhrases) {
+    const ids = PHRASE_TO_IMAGE_IDS[phrase];
+    if (ids) return U(ids[level]);
+  }
+  return null;
+}
+
 /** 기사 본문(제목+요약+본문)에서 핵심 키워드 추출. 초등 3개 / 중등 5개 / 고등 8개 */
 export function getKeyPhrasesForArticle(
   text: string,
@@ -378,7 +403,7 @@ function getWeekIndex(weekNumber: number): number {
   return ((weekNumber - 1) % 6) + 1;
 }
 
-/** 주차별로 다른 기사 반환 (1~6호는 각 주 이슈+해당 이미지, 7호+는 1~6 순환) */
+/** 주차별로 다른 기사 반환. 핵심 키워드 먼저 뽑고, 그 키워드 기준으로 이미지 매칭. */
 export function getArticleForWeek(
   weekNumber: number,
   section: string,
@@ -392,21 +417,30 @@ export function getArticleForWeek(
   const draftTitle = theme?.title ?? base.title;
   const draftSummary = theme?.summary ?? base.summary;
   const draftBody = theme?.body ?? base.body;
-  const imageUrl = getImageUrlForArticle({
-    section,
-    level,
-    title: draftTitle,
-    summary: draftSummary,
-    body: draftBody,
-  }) || base.imageUrl;
+  const fullText = `${draftTitle} ${draftSummary} ${draftBody ?? ''}`;
 
-  if (!theme) return { ...base, imageUrl };
+  // 1) 기사에서 핵심 키워드 추출 (하단에 표시할 것과 동일)
+  const keyPhrases = getKeyPhrasesForArticle(fullText, level);
+  // 2) 그 키워드 순서대로 이미지 매칭 → 키워드와 이미지 일치
+  const imageUrl =
+    getImageUrlFromKeyPhrases(keyPhrases, level, section) ||
+    getImageUrlForArticle({
+      section,
+      level,
+      title: draftTitle,
+      summary: draftSummary,
+      body: draftBody,
+    }) ||
+    base.imageUrl;
+
+  if (!theme) return { ...base, imageUrl, keyPhrases: keyPhrases.length ? keyPhrases : undefined };
 
   return {
     ...base,
     title: theme.title,
     summary: theme.summary,
     imageUrl,
+    ...(keyPhrases.length > 0 && { keyPhrases }),
     ...(theme.body && { body: theme.body }),
   };
 }

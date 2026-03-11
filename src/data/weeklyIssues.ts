@@ -30,6 +30,7 @@ export function getWeeklyIssue(weekNumber: number): WeeklyIssue | null {
         category: section,
         level,
         imageUrl: set.imageUrl,
+        keyPhrases: set.keyPhrases,
       });
     });
   };
