@@ -119,7 +119,7 @@ for (const phrase of KEY_PHRASES) {
 function getImageUrlFromKeyPhrases(
   keyPhrases: string[],
   level: Level,
-  section: string
+  _section: string
 ): string | null {
   for (const phrase of keyPhrases) {
     const ids = PHRASE_TO_IMAGE_IDS[phrase];

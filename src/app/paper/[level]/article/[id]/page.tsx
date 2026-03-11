@@ -5,6 +5,7 @@ import { formatIssueDateShort } from '@/lib/weekUtils';
 import { getArticleById, getWeeklyIssue } from '@/data/weeklyIssues';
 import { getKeyPhrasesForArticle } from '@/data/weeklyArticleVariants';
 import { ISSUE_NUMBER_BASE } from '@/lib/constants';
+import { ArticleDetailImage } from '@/components/ArticleDetailImage';
 
 const VALID_LEVELS: Level[] = ['elementary', 'middle', 'high'];
 
@@ -41,6 +42,7 @@ export default async function ArticleDetailPage({
   const imageUrl =
     article.imageUrl ||
     `https://picsum.photos/seed/${encodeURIComponent(article.id)}/800/450`;
+  const fallbackImageUrl = `https://picsum.photos/seed/${encodeURIComponent(article.id)}-fallback/800/450`;
 
   // 기사 저장 시 뽑은 키워드 사용 (이 키워드 기준으로 이미지도 매칭됨)
   const fullText = `${article.title} ${article.summary} ${article.body ?? ''}`;
@@ -67,11 +69,11 @@ export default async function ArticleDetailPage({
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 py-6">
         <figure className="mb-4 rounded-xl overflow-hidden border border-gray-200 -mx-4 sm:mx-0">
-          <img
+          <ArticleDetailImage
             src={imageUrl}
+            fallbackSrc={fallbackImageUrl}
             alt={article.title}
             className="w-full aspect-video object-cover"
-            referrerPolicy="no-referrer"
           />
         </figure>
 
