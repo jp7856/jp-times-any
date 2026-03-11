@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LEVEL_LABELS, type Level } from '@/lib/constants';
 import { formatIssueDateShort } from '@/lib/weekUtils';
 import { getArticleById, getWeeklyIssue } from '@/data/weeklyIssues';
+import { getKeyPhrasesForArticle } from '@/data/weeklyArticleVariants';
 import { ISSUE_NUMBER_BASE } from '@/lib/constants';
 
 const VALID_LEVELS: Level[] = ['elementary', 'middle', 'high'];
@@ -40,6 +41,9 @@ export default async function ArticleDetailPage({
   const imageUrl =
     article.imageUrl ||
     `https://picsum.photos/seed/${encodeURIComponent(article.id)}/800/450`;
+
+  const fullText = `${article.title} ${article.summary} ${article.body ?? ''}`;
+  const keyPhrases = getKeyPhrasesForArticle(fullText, level);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -83,6 +87,17 @@ export default async function ArticleDetailPage({
             {article.body}
           </div>
         </div>
+
+        {keyPhrases.length > 0 && (
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+              핵심 키워드
+            </p>
+            <p className="text-sm text-[var(--color-ink)]">
+              {keyPhrases.join(' · ')}
+            </p>
+          </div>
+        )}
 
         <div className="mt-10 pt-6 border-t border-gray-200">
           <Link
